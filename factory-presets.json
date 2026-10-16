@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "note": "Conceptual factory preset manifest only; values require calibration and DSP implementation.",
+  "presets": [
+    {"name": "Padrón Live Setup", "intent": "Live clarity, restrained delay/reverb, expression volume/wah, conservative feedback"},
+    {"name": "Ethereal Ambient Soundscape", "intent": "Long hall/Flerb, tempo-synced delay, subtle detune/harmony and preserved dry transient"},
+    {"name": "Acoustic Warmth Enhancer", "intent": "Gentle EQ contour, restrained top end, subtle saturation, short hall"},
+    {"name": "High-Energy Fusion", "intent": "Expressive wah, focused presence, pitch/harmony, tempo delay and output headroom"}
+  ]
+}
