@@ -25,6 +25,7 @@ namespace stringforge::dsp
 class StereoLooper final
 {
 public:
+    StereoLooper() = default;
     enum class State : uint8_t
     {
         Empty,
