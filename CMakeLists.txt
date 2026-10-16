@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(StringForge VERSION 0.1.0 LANGUAGES CXX)
+project(StringForge VERSION 0.1.0 LANGUAGES C CXX)
 
 # Place a JUCE checkout (or submodule) in ./JUCE before configuring.
 add_subdirectory(JUCE)
