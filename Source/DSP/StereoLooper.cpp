@@ -29,7 +29,7 @@ void StereoLooper::prepare (double sampleRateHz,
     const double bytesPerLoopSample = audioBytesPerLoopSample + stampBytesPerLoopSample;
     const double budgetSamples = maxAudioStorageBytes / bytesPerLoopSample;
     const double requestedSamples = boundedSeconds * sampleRateHz_;
-    maxLoopSamples_ = juce::jmax (minimumLoopSamples, (int) std::min ({ requestedSamples,
+    maxLoopSamples_ = juce::jmax (minimumLoopSamples_, (int) std::min ({ requestedSamples,
         budgetSamples, (double) std::numeric_limits<int>::max() / 4.0 }));
     crossfadeSamples_ = juce::jlimit (2, juce::jmax (2, maxLoopSamples_ / 8),
         (int) std::lround (sampleRateHz_ * juce::jlimit (0.5f, 20.0f, crossfadeMilliseconds) / 1000.0));
