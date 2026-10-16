@@ -4,6 +4,7 @@
 #include "DSP/PitchHarmonyEngine.h"
 #include "DSP/StereoLooper.h"
 #include <array>
+#include <atomic>
 
 class StringForgeAudioProcessor final : public juce::AudioProcessor
 {
@@ -59,6 +60,20 @@ private:
     std::vector<std::vector<float>> delayMemory;
     int delayWrite = 0;
     int maxDelaySamples = 1;
+// Spectrum analyzer buffer
+static constexpr int spectrumBufferSize = 8192;
+
+std::array<std::atomic<float>, spectrumBufferSize> spectrumRing {};
+std::atomic<unsigned int> spectrumWritePosition { 0 };
+
+void pushSpectrumSamples(
+    const juce::AudioBuffer<float>& buffer
+) noexcept;
+
+void copyLatestSpectrumSamples(
+    float* destination,
+    int numSamples
+) const noexcept;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StringForgeAudioProcessor)
 };
