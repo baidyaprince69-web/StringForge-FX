@@ -294,6 +294,8 @@ void StringForgeAudioProcessor::processFloatPath (juce::AudioBuffer<float>& buff
     const int numSamples = buffer.getNumSamples();
     if (numChannels == 0 || numSamples == 0) return;
 
+    pushSpectrumSamples (buffer);
+
     if (numSamples > dryBuffer.getNumSamples())
     {
         // Defensive fail-safe; normal processBlock() chunks over-sized callbacks.
