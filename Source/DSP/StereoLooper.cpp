@@ -8,7 +8,7 @@ namespace stringforge::dsp
 {
 namespace
 {
-constexpr int minimumLoopSamples = 128;
+constexpr int minimumLoopSamples_ = 128;
 }
 
 void StereoLooper::prepare (double sampleRateHz,
