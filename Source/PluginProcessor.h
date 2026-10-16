@@ -39,6 +39,7 @@ public:
     float value (const char* parameterID) const noexcept;
 
 private:
+friend class StringForgeAudioProcessorEditor;
     void processFloatPath (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi);
     void serviceLooperParameterCommands() noexcept;
     double sampleRateHz = 44100.0;
