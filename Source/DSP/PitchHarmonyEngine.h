@@ -47,6 +47,8 @@ struct HarmonyMapper final
 class LowLatencyPitchShifter final
 {
 public:
+        LowLatencyPitchShifter() = default;
+
     void prepare (double sampleRateHz,
                   int maxBlockSize,
                   int numChannels,
