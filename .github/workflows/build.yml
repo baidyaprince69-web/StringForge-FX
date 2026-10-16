@@ -1,0 +1,26 @@
+name: Build VST3 Plugin
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Get JUCE Framework
+      run: git clone https://github.com/juce-framework/JUCE.git JUCE
+
+    - name: Configure CMake
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build VST3 Target
+      run: cmake --build build --config Release --target StringForge_VST3
+
+    - name: Upload VST3 Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: StringForge-VST3-Windows
+        path: build/StringForge_artefacts/Release/VST3/
