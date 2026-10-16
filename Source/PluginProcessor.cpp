@@ -105,6 +105,64 @@ float StringForgeAudioProcessor::value (const char* parameterID) const noexcept
     return 0.0f;
 }
 
+
+void StringForgeAudioProcessor::pushSpectrumSamples(
+    const juce::AudioBuffer<float>& buffer
+) noexcept
+{
+    const int channels = juce::jmin(2, buffer.getNumChannels());
+    const int samples = buffer.getNumSamples();
+
+    unsigned int position =
+        spectrumWritePosition.load(std::memory_order_relaxed);
+
+    for (int i = 0; i < samples; ++i)
+    {
+        float mono = 0.0f;
+
+        for (int ch = 0; ch < channels; ++ch)
+            mono += buffer.getSample(ch, i);
+
+        if (channels > 0)
+            mono /= static_cast<float>(channels);
+
+        spectrumRing[position % spectrumBufferSize].store(
+            mono, std::memory_order_relaxed);
+
+        ++position;
+    }
+
+    spectrumWritePosition.store(
+        position, std::memory_order_release);
+}
+
+void StringForgeAudioProcessor::copyLatestSpectrumSamples(
+    float* destination,
+    int numSamples
+) const noexcept
+{
+    if (destination == nullptr || numSamples <= 0)
+        return;
+
+    const unsigned int end =
+        spectrumWritePosition.load(std::memory_order_acquire);
+
+    const unsigned int count = static_cast<unsigned int>(
+        juce::jmin(numSamples, spectrumBufferSize));
+
+    const unsigned int start = end - count;
+
+    for (unsigned int i = 0; i < count; ++i)
+    {
+        destination[i] = spectrumRing[
+            (start + i) % spectrumBufferSize
+        ].load(std::memory_order_relaxed);
+    }
+
+    for (int i = static_cast<int>(count); i < numSamples; ++i)
+        destination[i] = 0.0f;
+}
+
 void StringForgeAudioProcessor::prepareToPlay (double sr, int samplesPerBlock)
 {
     sampleRateHz = juce::jmax (1.0, sr);
